@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
 interface ApplePreloaderProps {
-  onComplete?: () => void;
+  onComplete?: () => void
 }
 
 const STATUS_MESSAGES = [
@@ -9,73 +9,75 @@ const STATUS_MESSAGES = [
   "Loading intelligent workflows...",
   "Calibrating spatial interface...",
   "Ready to experience.",
-];
+]
 
 export default function ApplePreloader({ onComplete }: ApplePreloaderProps) {
-  const [progress, setProgress] = useState(0);
-  const [statusIndex, setStatusIndex] = useState(0);
-  const [phase, setPhase] = useState<"loading" | "exit" | "done">("loading");
+  const [progress, setProgress] = useState(0)
+  const [statusIndex, setStatusIndex] = useState(0)
+  const [phase, setPhase] = useState<"loading" | "exit" | "done">("loading")
 
   useEffect(() => {
     // Smooth progress increment with easing
-    const startTime = performance.now();
-    const duration = 1200; // 1.2s total smooth load
+    const startTime = performance.now()
+    const duration = 1200 // 1.2s total smooth load
 
-    let animationFrameId: number;
+    let animationFrameId: number
 
     const update = (now: number) => {
-      const elapsed = now - startTime;
-      const t = Math.min(1, elapsed / duration);
+      const elapsed = now - startTime
+      const t = Math.min(1, elapsed / duration)
       // Apple fluid cubic-bezier curve approx: 1 - Math.pow(1 - t, 3)
-      const easedProgress = Math.round((1 - Math.pow(1 - t, 3)) * 100);
-      setProgress(easedProgress);
+      const easedProgress = Math.round((1 - Math.pow(1 - t, 3)) * 100)
+      setProgress(easedProgress)
 
       if (easedProgress < 35) {
-        setStatusIndex(0);
+        setStatusIndex(0)
       } else if (easedProgress < 70) {
-        setStatusIndex(1);
+        setStatusIndex(1)
       } else if (easedProgress < 95) {
-        setStatusIndex(2);
+        setStatusIndex(2)
       } else {
-        setStatusIndex(3);
+        setStatusIndex(3)
       }
 
       if (t < 1) {
-        animationFrameId = requestAnimationFrame(update);
+        animationFrameId = requestAnimationFrame(update)
       } else {
         // Hold for 250ms on 100% Ready, then trigger Apple exit sequence
         const exitTimer = setTimeout(() => {
-          setPhase("exit");
-          if (onComplete) onComplete();
+          setPhase("exit")
+          if (onComplete) onComplete()
           // After exit transition finishes, set to done
           const doneTimer = setTimeout(() => {
-            setPhase("done");
-          }, 850);
-          return () => clearTimeout(doneTimer);
-        }, 250);
-        return () => clearTimeout(exitTimer);
+            setPhase("done")
+          }, 850)
+          return () => clearTimeout(doneTimer)
+        }, 250)
+        return () => clearTimeout(exitTimer)
       }
-    };
+    }
 
-    animationFrameId = requestAnimationFrame(update);
+    animationFrameId = requestAnimationFrame(update)
 
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [onComplete]);
+    return () => cancelAnimationFrame(animationFrameId)
+  }, [onComplete])
 
   if (phase === "done") {
-    return null;
+    return null
   }
 
   const handleSkip = () => {
-    setProgress(100);
-    setPhase("exit");
-    if (onComplete) onComplete();
-    setTimeout(() => setPhase("done"), 500);
-  };
+    setProgress(100)
+    setPhase("exit")
+    if (onComplete) onComplete()
+    setTimeout(() => setPhase("done"), 500)
+  }
 
   return (
     <div
-      className={`apple-preloader ${phase === "exit" ? "apple-preloader--exit" : ""}`}
+      className={`apple-preloader ${
+        phase === "exit" ? "apple-preloader--exit" : ""
+      }`}
       aria-live="polite"
       aria-label="Loading portfolio experience"
     >
@@ -165,5 +167,5 @@ export default function ApplePreloader({ onComplete }: ApplePreloaderProps) {
         </button>
       </div>
     </div>
-  );
+  )
 }
