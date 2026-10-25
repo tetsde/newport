@@ -73,7 +73,10 @@ export default function CustomCursor() {
   }, [isVisible])
 
   // Don't render cursor on touch devices
-  if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+  if (
+    typeof window !== "undefined" &&
+    window.matchMedia("(pointer: coarse)").matches
+  ) {
     return null
   }
 
@@ -87,7 +90,9 @@ export default function CustomCursor() {
       <div
         ref={ringRef}
         className={`absolute left-0 top-0 rounded-full border border-gray-400 mix-blend-difference transition-all duration-300 -translate-x-1/2 -translate-y-1/2 ${
-          isHovering ? "w-12 h-12 bg-white/10 backdrop-blur-sm scale-110" : "w-8 h-8 bg-transparent"
+          isHovering
+            ? "w-12 h-12 bg-white/10 backdrop-blur-sm scale-110"
+            : "w-8 h-8 bg-transparent"
         }`}
         style={{ willChange: "transform" }}
       />

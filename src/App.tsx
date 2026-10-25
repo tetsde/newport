@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react"
+import { Analytics } from "@vercel/analytics/react"
 
 import SlideDock from "./components/SlideDock"
 
@@ -27,7 +28,8 @@ const projects: Project[] = [
     image: "/assets/project-coffee.jpg",
   },
   {
-    title: "Academic Course Delivery | Applied AI Duy Tan University x Google Gemini Academy",
+    title:
+      "Academic Course Delivery | Applied AI Duy Tan University x Google Gemini Academy",
     type: "Student Trainer (Lecturer Class)",
     image: "/assets/project-books.jpg",
   },
@@ -45,30 +47,24 @@ const projects: Project[] = [
   },
 ]
 
-const tools = [
-  "Py",
-  "API",
-  "Docker",
-  "Git",
-  "AWS",
-  "SQL",
-  "Mongo",
-  "LLM",
-];
+const tools = ["Py", "API", "Docker", "Git", "AWS", "SQL", "Mongo", "LLM"]
 
 const testimonials = [
   {
-    quote: "His ability to convey technical knowledge is very coherent, engaging, and highly inspiring to the community.",
+    quote:
+      "His ability to convey technical knowledge is very coherent, engaging, and highly inspiring to the community.",
     author: "Nguyễn Như Hoàng Phúc",
     role: "Student, Duy Tan University",
   },
   {
-    quote: "After the class, I was able to create my own Portfolio. I found the session very rewarding with new knowledge about AI and Gemini.",
+    quote:
+      "After the class, I was able to create my own Portfolio. I found the session very rewarding with new knowledge about AI and Gemini.",
     author: "Trần Thị Hằng",
     role: "Student, Duy Tan University",
   },
   {
-    quote: "Super energetic and on fire. His ability to convey technical knowledge is very coherent, engaging, and highly inspiring to the community.",
+    quote:
+      "Super energetic and on fire. His ability to convey technical knowledge is very coherent, engaging, and highly inspiring to the community.",
     author: "Gem",
     role: "Student, FPT University Da Nang",
   },
@@ -82,7 +78,7 @@ const testimonials = [
     author: "Lương Thuỷ Tiên",
     role: "Lecturer, VKU",
   },
-];
+]
 function ProjectCard({
   project,
   className = "",
@@ -108,7 +104,9 @@ function ProjectCard({
             <p className="text-xs font-bold uppercase tracking-wider text-gray-300 mb-1">
               {project.type}
             </p>
-            <h3 className="text-2xl font-bold text-white mb-2">{project.title}</h3>
+            <h3 className="text-2xl font-bold text-white mb-2">
+              {project.title}
+            </h3>
           </div>
         </>
       )}
@@ -121,14 +119,18 @@ function TestimonialCard({
 }: {
   testimonial: typeof testimonials[number]
 }) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false)
 
   return (
     <div
       className="card testimonial-card cursor-pointer"
       onClick={() => setIsExpanded(!isExpanded)}
     >
-      <p className={`testimonial-quote transition-all duration-300 ${isExpanded ? '' : 'line-clamp-3 md:line-clamp-none'}`}>
+      <p
+        className={`testimonial-quote transition-all duration-300 ${
+          isExpanded ? "" : "line-clamp-3 md:line-clamp-none"
+        }`}
+      >
         &quot;{testimonial.quote}&quot;
       </p>
       <div className="testimonial-author mt-4">
@@ -140,14 +142,17 @@ function TestimonialCard({
 }
 
 export default function App() {
-
   const [activeSection, setActiveSection] = useState("home")
   const [scrollProgress, setScrollProgress] = useState(0)
 
   const scrollToSection = useCallback((id: string) => {
     const el = document.getElementById(id)
     if (el) {
-      el.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" })
+      el.scrollIntoView({
+        behavior: "smooth",
+        inline: "start",
+        block: "nearest",
+      })
       setActiveSection(id)
     }
   }, [])
@@ -189,14 +194,18 @@ export default function App() {
         const canScrollDown = Math.ceil(scrollTop + clientHeight) < scrollHeight
 
         // If the container can scroll vertically in that direction, let it scroll naturally
-        if ((isScrollingUp && canScrollUp) || (isScrollingDown && canScrollDown)) {
+        if (
+          (isScrollingUp && canScrollUp) ||
+          (isScrollingDown && canScrollDown)
+        ) {
           return
         }
       }
 
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && Math.abs(e.deltaY) > 2) {
         e.preventDefault()
-        const maxScroll = document.documentElement.scrollWidth - window.innerWidth
+        const maxScroll =
+          document.documentElement.scrollWidth - window.innerWidth
         if (!isWheeling) {
           targetX = window.scrollX
           currentX = window.scrollX
@@ -246,7 +255,7 @@ export default function App() {
       },
       {
         threshold: 0.35,
-      }
+      },
     )
 
     panels.forEach((p) => observer.observe(p))
@@ -256,7 +265,9 @@ export default function App() {
   // Apple spotlight effect: update CSS mouse position on hoverable cards
   useEffect(() => {
     const handlePointerMove = (e: PointerEvent) => {
-      const cards = document.querySelectorAll(".card, .project-card, .contact-card")
+      const cards = document.querySelectorAll(
+        ".card, .project-card, .contact-card",
+      )
       cards.forEach((card) => {
         const rect = card.getBoundingClientRect()
         if (
@@ -267,8 +278,8 @@ export default function App() {
         ) {
           const x = e.clientX - rect.left
           const y = e.clientY - rect.top
-            ; (card as HTMLElement).style.setProperty("--mouse-x", `${x}px`)
-            ; (card as HTMLElement).style.setProperty("--mouse-y", `${y}px`)
+          ;(card as HTMLElement).style.setProperty("--mouse-x", `${x}px`)
+          ;(card as HTMLElement).style.setProperty("--mouse-y", `${y}px`)
         }
       })
     }
@@ -287,28 +298,52 @@ export default function App() {
       />
 
       <nav className="nav" aria-label="Portfolio navigation">
-        <a className="nav__brand" href="#home" onClick={(e) => { e.preventDefault(); scrollToSection("home"); }}>
+        <a
+          className="nav__brand"
+          href="#home"
+          onClick={(e) => {
+            e.preventDefault()
+            scrollToSection("home")
+          }}
+        >
           nam, in progress.<span>®</span>
         </a>
         <div className="nav__links">
           <a
             href="#work"
-            className={activeSection === "work" || activeSection === "feature" ? "nav__link--active" : ""}
-            onClick={(e) => { e.preventDefault(); scrollToSection("work"); }}
+            className={
+              activeSection === "work" || activeSection === "feature"
+                ? "nav__link--active"
+                : ""
+            }
+            onClick={(e) => {
+              e.preventDefault()
+              scrollToSection("work")
+            }}
           >
             Work
           </a>
           <a
             href="#about"
-            className={activeSection === "about" || activeSection === "testimonials" ? "nav__link--active" : ""}
-            onClick={(e) => { e.preventDefault(); scrollToSection("about"); }}
+            className={
+              activeSection === "about" || activeSection === "testimonials"
+                ? "nav__link--active"
+                : ""
+            }
+            onClick={(e) => {
+              e.preventDefault()
+              scrollToSection("about")
+            }}
           >
             About
           </a>
           <a
             href="#contact"
             className={activeSection === "contact" ? "nav__link--active" : ""}
-            onClick={(e) => { e.preventDefault(); scrollToSection("contact"); }}
+            onClick={(e) => {
+              e.preventDefault()
+              scrollToSection("contact")
+            }}
           >
             Contact
           </a>
@@ -328,7 +363,9 @@ export default function App() {
         <section className="panel panel--home" id="home">
           <div className="bento bento--home">
             <div className="card intro-card">
-              <p className="eyebrow">AI Trainer & AI Engineer · Da Nang, Vietnam</p>
+              <p className="eyebrow">
+                AI Trainer & AI Engineer · Da Nang, Vietnam
+              </p>
               <h1>
                 Ideas with
                 <br />
@@ -353,7 +390,8 @@ export default function App() {
             <a className="card about-card" href="#about">
               <span className="asterisk">✦</span>
               <h2>
-                Da Nang-based developer and AI trainer exploring how technology can become useful, reliable and human.
+                Da Nang-based developer and AI trainer exploring how technology
+                can become useful, reliable and human.
               </h2>
               <div className="card-footer">
                 <span>About me</span>
@@ -404,7 +442,6 @@ export default function App() {
               <ul>
                 <li>
                   <span>01</span> Build AI Applications
-
                 </li>
                 <li>
                   <span>02</span> Train People with AI
@@ -480,7 +517,9 @@ export default function App() {
               <span>reimagined.</span>
             </h2>
             <p>
-              Designing, developing, and deploying intelligent AI systems and training programs that bring cutting-edge generative AI capabilities into practical workflows.
+              Designing, developing, and deploying intelligent AI systems and
+              training programs that bring cutting-edge generative AI
+              capabilities into practical workflows.
             </p>
             <a href="#contact">
               View case study <Arrow />
@@ -497,18 +536,22 @@ export default function App() {
 
         <section className="panel panel--about" id="about">
           <div className="about-portrait">
-            <img src="/assets/avatar.jpg" alt="Nam - Expert AI Trainer and AI Engineer based in Da Nang, Vietnam" />
+            <img
+              src="/assets/avatar.jpg"
+              alt="Nam - Expert AI Trainer and AI Engineer based in Da Nang, Vietnam"
+            />
           </div>
           <div className="card about-copy">
             <p className="eyebrow">Nice to meet you</p>
             <h2>
-              I&apos;m Nam, an AI engineer focused on building AI systems that are
+              I&apos;m Nam, an AI engineer focused on building AI systems that
+              are
               <span> useful, reliable and built for real work.</span>
             </h2>
             <p>
-              I explore LLMs, AI Agents and backend systems to turn AI capabilities into
-              practical products. I care about making AI not only work, but work reliably,
-              safely and with measurable value.
+              I explore LLMs, AI Agents and backend systems to turn AI
+              capabilities into practical products. I care about making AI not
+              only work, but work reliably, safely and with measurable value.
             </p>
             <div className="about-copy__meta">
               <span>Based in Da Nang, Vietnam</span>
@@ -547,10 +590,34 @@ export default function App() {
               <span>Da Nang City </span>
               <div>
                 <a href="tel:0859215285">0859215285</a>
-                <a href="https://www.linkedin.com/in/tphn26" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                <a href="https://github.com/tetsde" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <a href="https://www.facebook.com/tetsdee" target="_blank" rel="noopener noreferrer">Facebook</a>
-                <a href="https://tphn26.notion.site/A-work-in-progress-dc2590f7e19e83f499150179dedb4837?source=copy_link" target="_blank" rel="noopener noreferrer">Notion</a>
+                <a
+                  href="https://www.linkedin.com/in/tphn26"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  LinkedIn
+                </a>
+                <a
+                  href="https://github.com/tetsde"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  GitHub
+                </a>
+                <a
+                  href="https://www.facebook.com/tetsdee"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Facebook
+                </a>
+                <a
+                  href="https://tphn26.notion.site/A-work-in-progress-dc2590f7e19e83f499150179dedb4837?source=copy_link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Notion
+                </a>
               </div>
             </div>
           </div>
@@ -559,6 +626,9 @@ export default function App() {
 
       {/* Apple Dynamic Island / Floating Slide Dock */}
       <SlideDock activeId={activeSection} onNavigate={scrollToSection} />
+
+      {/* Vercel Web Analytics */}
+      <Analytics />
     </main>
   )
 }
